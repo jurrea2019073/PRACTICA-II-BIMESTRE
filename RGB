@@ -1,0 +1,55 @@
+  #define push_button1 3
+  #define push_button2 5
+  #define ledrojo      6
+  #define ledverde     9
+  #define ledazul      10
+  #define setpinInput(pin) pinMode(pin, INPUT) 
+  #define setpinOutput(pin) pinMode(pin, OUTPUT) 
+  #define SBI(pin);        digitalWrite(pin,HIGH) 
+  #define CBI(pin);         digitalWrite(pin,LOW)
+  
+  void setup() {
+setpinInput(push_button1);
+setpinInput(push_button2);
+setpinOutput(ledrojo);
+setpinOutput(ledverde);
+setpinOutput(ledazul);
+  
+  }
+  void loop() {
+  
+bool a1 = digitalRead(push_button1);
+bool a2 = digitalRead(push_button2);
+if (a1 == LOW && a2 == HIGH){
+SBI(ledrojo);
+SBI(ledverde);
+CBI(ledazul);
+}
+else if (a1 == HIGH && a2 == LOW){
+CBI(ledrojo);
+SBI(ledverde);
+SBI(ledazul);
+}
+
+else if (a1 == LOW && a2 == LOW){
+SBI(ledrojo);
+CBI(ledverde);
+SBI(ledazul);
+}
+
+else
+{
+delay(500);
+SBI(ledrojo);
+delay(500);
+CBI(ledrojo);
+SBI(ledverde);
+delay(500);
+CBI(ledverde);
+SBI(ledazul);
+delay(500);
+CBI(ledazul);
+}
+}
+
+ 

@@ -1,3 +1,14 @@
+/*
+   Fundacion Kinal
+   Centro educativo tecnico laboral Kinal
+   Quinto perito
+   Quinto electronica
+   Codigo Tecnico: EB5AM 
+   Curso: Taller de electronica digital y reparacion de computadoras I
+   Proyecto: Teclado matricial
+   Jorge Eduardo Urrea Guerra 2019073
+   Fecha: 21 de abril
+*/
 int BuzzerPin = 11;
 int Trigger = 2;
 int Echo  = 3;

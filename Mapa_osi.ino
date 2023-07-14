@@ -8,6 +8,7 @@
  *Nombre: Jorge Eduardo Urrea Guerra
  *Nombre: Diego Rodolfo Revolorio Lico
  *Carnet: 2019073
+ *carnet: 2019046
  *Proyecto: Practica 4
  */
 #include <Wire.h>

@@ -1,3 +1,16 @@
+/*
+ * FUNDACIÓN KINAL
+ * CENTRO EDUCATIVO TECNICO LABORAL KINAL
+ * Electronica
+ * Grado: Quinto 
+ * Sección: A
+ * CURSO: Taller de electronica digital y reparacion de computadoras I
+ * Diego Rodolfo Revolorio Lico |
+ * 2019046
+ * Jorge Eduardo Urrea Guerra
+ * 2019073
+ * Practica 7
+ */
 //Librerias
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h> 

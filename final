@@ -1,0 +1,103 @@
+#include <SoftwareSerial.h>
+const int pinAnalogico = A0;    // Pin analógico para medir la tensión
+const int medicion1 = 7;         // Pin positivo
+const int medicion2 = 6;         // Pin negativo
+int valor;                // Variable que almacena el valor raw (0 a 1023)
+float voltaje;               // Variable que almacena el voltaje (0.0 a 25.0)
+
+float Sensibilidad = 0.185;
+
+const float resistenciaConocida = 1000.0; // Resistencia conocida en ohmios (1k ohm)
+
+SoftwareSerial blue(7, 6);
+
+unsigned long tiempoAnterior = 0;
+const unsigned long intervaloMedicion = 1000; // Intervalo de medición en milisegundos
+
+void setup() {
+  pinMode(medicion1, OUTPUT);  // Configurar el pin positivo como salida
+  pinMode(medicion2, OUTPUT);  // Configurar el pin negativo como salida
+  Serial.begin(9600);    // Iniciar la comunicación serial
+  blue.begin(9600);
+}
+
+char receptor;
+
+void loop() {
+  // Verificar si hay datos disponibles desde la aplicación Bluetooth
+  if (blue.available()) {
+    receptor = blue.read();
+    Serial.println(receptor);
+
+    // Procesar comandos según corresponda
+    if (receptor == 'A') {
+      medirvoltaje();
+    }
+    else if (receptor == 'B') {
+      medirresistencia();
+    }
+    else if (receptor == 'C') {
+      medircorriente();
+    }
+  }
+
+  // Realizar mediciones continuas a intervalos regulares
+  unsigned long tiempoActual = millis();
+  if (tiempoActual - tiempoAnterior >= intervaloMedicion) {
+    tiempoAnterior = tiempoActual;
+
+    // Realizar la medición que desees aquí
+    // Por ejemplo: medircorriente();
+  }
+}
+
+void medirvoltaje() {
+  digitalWrite(medicion1, HIGH);
+  digitalWrite(medicion2, HIGH);
+  valor = analogRead(A1);               // Realizar la lectura
+  voltaje = map(valor, 0, 1023, 0, 250) / 10.0;  // Escalar a 0.0 - 25.0
+  Serial.print("Voltaje: ");
+  Serial.println(voltaje);          // Mostrar el valor por serial
+  blue.print(voltaje);
+  blue.print(";");
+}
+
+void medirresistencia() {
+  digitalWrite(medicion1, LOW);
+  digitalWrite(medicion2, LOW);
+  int valorAnalogico = analogRead(pinAnalogico);
+
+  // Convertir el valor analógico a tensión (en voltios)
+  float tensionMedida = (float)valorAnalogico * (5.0 / 1023.0);
+
+  // Calcular la corriente (I) usando la ley de Ohm: I = V / R
+  float corriente = tensionMedida / resistenciaConocida;
+
+  // Calcular la resistencia desconocida usando la ley de Ohm: R = V / I
+  float resistenciaDesconocida = tensionMedida / corriente;
+
+  Serial.print("Resistencia: ");
+  Serial.println(resistenciaDesconocida);
+  blue.print(resistenciaDesconocida);
+  blue.print(";");
+}
+
+void medircorriente() {
+  float Corriente=calculo(500);
+      Serial.print("Corriente: ");
+      Serial.println(Corriente,3);
+      blue.print(Corriente,3);
+      blue.print(";");
+}
+float calculo(int numeroMuestral)
+{
+float LeerSenso = 0;
+float inten = 0;
+for(int i=0;i<numeroMuestral;i++)
+{
+  LeerSenso= analogRead(A2) * (5.0 / 1023.0);
+  inten=inten+(LeerSenso-2.5)/Sensibilidad;
+}
+inten=inten/numeroMuestral;
+return(inten);
+}
